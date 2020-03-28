@@ -15,11 +15,12 @@ pygame.display.set_icon(icon)
 playerImg = pygame.image.load('img/player.png')
 playerX = 370
 playerY = 480
+playerX_change = 0
 
 
-def player():
+def player(x,y):
     # We DRAW the image, that is what blit means
-    screen.blit(playerImg, (playerX,playerY))
+    screen.blit(playerImg, (x,y))
 
 
 # Main Game Loop
@@ -31,10 +32,27 @@ while running:
     screen.fill((50, 0, 0))
 
     for event in pygame.event.get():
+
         # event.type -> <Event(12-Quit {})>
         if event.type == pygame.QUIT:
             running = False
 
-    player()
+        # If key is pressed, check if it's left or right key
+        if event.type == pygame.KEYDOWN:
+            print("A keystroke is pressed")
+            if event.key == pygame.K_LEFT:
+                playerX_change = -3
+                print("Left arrow is pressed")
+            if event.key == pygame.K_RIGHT:
+                playerX_change = 3
+                print("Right arrow is pressed")
+        if event.type == pygame.KEYUP:
+            if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
+                playerX_change = 0
+                print("Keystroke has been released")
+
+    playerX += playerX_change
+    player(playerX,playerY)
+
     pygame.display.update()
 
